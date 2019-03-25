@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import info.adavis.topsy.turvey.R;
+import info.adavis.topsy.turvey.db.TopsyTurveyDataSource;
 
 public class RecipesActivity extends AppCompatActivity
 {
@@ -14,6 +15,7 @@ public class RecipesActivity extends AppCompatActivity
 
     private RecyclerView recipesRecyclerView;
     private RecipesAdapter adapter;
+    private TopsyTurveyDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,7 +27,7 @@ public class RecipesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         recipesRecyclerView = (RecyclerView) findViewById(R.id.recipes_recycler_view);
-
+        dataSource=new TopsyTurveyDataSource(this);
         setupRecyclerView();
     }
 
@@ -33,12 +35,14 @@ public class RecipesActivity extends AppCompatActivity
     protected void onResume ()
     {
         super.onResume();
+        dataSource.open();
     }
 
     @Override
     protected void onPause ()
     {
         super.onPause();
+        dataSource.close();
     }
 
     private void setupRecyclerView ()
