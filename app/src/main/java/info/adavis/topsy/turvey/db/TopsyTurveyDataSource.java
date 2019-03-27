@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.List;
+
 import info.adavis.topsy.turvey.models.Recipe;
+import info.adavis.topsy.turvey.models.RecipeStep;
 
 
 public class TopsyTurveyDataSource {
@@ -35,5 +38,21 @@ public class TopsyTurveyDataSource {
         values.put(RecipeContract.RecipeEntry.COLUMN_IMAGE_RESOURCE_ID,recipe.getImageResourceId());
         long rowId=database.insert(RecipeContract.RecipeEntry.TABLE_NAME,null,values);
         Log.d(TAG, "recipe with id: " + rowId);
+
+        List<RecipeStep> steps=recipe.getSteps();
+        if (steps!=null && steps.size()>0){
+            for (RecipeStep step: steps){
+                createRecipeStep(step,rowId);
+            }
+        }
+    }
+
+    public void createRecipeStep(RecipeStep recipeStep, long recipeId){
+        ContentValues values=new ContentValues();
+        values.put(RecipeContract.RecipeStepEntry.COLUMN_RECIPE_ID,recipeId);
+        values.put(RecipeContract.RecipeStepEntry.COLUMN_INSTRUCTION,recipeStep.getInstruction());
+        values.put(RecipeContract.RecipeStepEntry.COLUMN_STEP_NUMBER,recipeStep.getStepNumber());
+        long rowId=database.insert(RecipeContract.RecipeStepEntry.TABLE_NAME,null,values);
+        Log.d(TAG, "recipe step with id: " + rowId);
     }
 }
