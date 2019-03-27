@@ -36,6 +36,7 @@ public class RecipesActivity extends AppCompatActivity
     {
         super.onResume();
         dataSource.open();
+
     }
 
     @Override
