@@ -1,9 +1,11 @@
 package info.adavis.topsy.turvey.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.LinearLayout;
+
+import info.adavis.topsy.turvey.models.Recipe;
 
 
 public class TopsyTurveyDataSource {
@@ -24,5 +26,14 @@ public class TopsyTurveyDataSource {
     public void close(){
         dbHelper.close();
         Log.d(TAG,"databse is closed");
+    }
+
+    public void createRecipe(Recipe recipe){
+        ContentValues values=new ContentValues();
+        values.put(RecipeContract.RecipeEntry.COLUMN_NAME,recipe.getName());
+        values.put(RecipeContract.RecipeEntry.COLUMN_DESCRIPTION,recipe.getDescription());
+        values.put(RecipeContract.RecipeEntry.COLUMN_IMAGE_RESOURCE_ID,recipe.getImageResourceId());
+        long rowId=database.insert(RecipeContract.RecipeEntry.TABLE_NAME,null,values);
+        Log.d(TAG, "recipe with id: " + rowId);
     }
 }
